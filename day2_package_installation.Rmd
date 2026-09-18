@@ -1,0 +1,182 @@
+---
+title: "Group 1 Project"
+output: html_document
+date: "2026-09-18"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+---
+title: "HMDD Short Course Package Installation"
+author: "Lisa Karstens PhD, Juliette Kudrick"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: TRUE
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+# Overview
+
+## Package Origins
+
+Since we are working in Posit Cloud, we will need to set up our R
+environment so that all of the libraries we need are installed and ready
+to use.
+
+Please note that Posit Cloud projects are independent, so you must
+install packages **once per project**. If you are working on your local
+machine, this does not apply, and a package installed in one project
+will be available in another.
+
+Throughout this course, we will use packages primarily from two sources:
+
+1)  [CRAN (Comprehensive R Archive
+    Network)](https://cran.r-project.org/): This is the central
+    repository for R packages. Packages included in this repository can
+    complete a wide variety of tasks to fit your scripting needs.
+2)  [Bioconductor](https://www.bioconductor.org/): This is a repository
+    that contains packages that are more focused on bioinformatic tasks.
+    We will access more specialized packages well suited to course needs
+    through this resource.
+
+We will also install packages from GitHub. This is most commonly done
+when you are working with packages still in development. While this adds
+an installation step, it allows you to access novel and helpful code.
+
+## Tips on Using Packages
+
+-   To load a particular installed package into your environment, use
+    the `library()` function.
+    -   Example syntax: `library(tidyverse)` would load the `tidyverse`
+        package into your workspace.
+-   If you want to access a function without using the `library()`
+    command, you can use the syntax `package_name::function_name()`
+    -   Example: `jsonlite::flatten()` would run the `flatten` function
+        *without* needing to load `jsonlite` first.
+    -   This can also be extremely helpful if you install multiple
+        packages that contain functions with identical names.
+-   If you have a question about a particular function, you can run
+    `?function_name` in the **console**, and the documentation will
+    appear in the **Help** window.
+
+# Installations
+
+```{r note_t0}
+
+## here, we record the start time prior to install
+t0 <- Sys.time()
+
+```
+
+## CRAN Packages
+
+We begin by installing all of the CRAN packages necessary for course
+content.
+
+**NOTE:** `tidyverse` is a large package that contains many other
+packages, all of which focus on data cleaning and manipulation.
+Consequently, while we don't explicitly install them, by installing
+`tidyverse`, we gain access to many additional packages that will be
+discussed throughout this course, including `tidyr`, `dplyr`, and
+`ggplot2`.
+
+```{r cran_install}
+
+## identify all of the packages we need to get from CRAN
+all_cran_pkgs <- c("knitr", "rmarkdown", "BiocManager", "utils", "rvest",
+                   "janitor", "here", "tidyverse", "jsonlite", "data.table", 
+                   "duckdb", "CDMConnector", "renv", "arrow", "patchwork", 
+                   "devtools", "remotes")
+  
+## run install
+install.packages(all_cran_pkgs)
+
+```
+
+## Bioconductor Packages
+
+From there, we move to installing Bioconductor packages.
+
+**NOTE:** Installing Bioconductor packages requires using the
+`BiocManager::install()` function, making the installation syntax
+slightly different from the chunk above.
+
+```{r bioc_install}
+
+all_bioc_pkgs <- c("metabolomicsWorkbenchR", "HMP16SData", "phyloseq")
+
+BiocManager::install(all_bioc_pkgs,
+                     update = FALSE, ask = FALSE)
+
+```
+
+## GitHub Packages
+
+For this course, we will be using the following GitHub packages:
+
+-   `microshades`: this package is designed to create data
+    visualizations that are accessible for people with color vision
+    deficiency
+
+Because GitHub packages are coming from an external source, we have to
+use the `remotes` package for access.
+
+### Microshades
+
+```{r gh_install_micro}
+
+remotes::install_github("KarstensLab/microshades", dependencies = TRUE)
+
+```
+
+# Summarize Time Taken
+
+Now that all of our installations have completed, we can look at how
+long it took for them to complete.
+
+```{r install_time}
+
+tE <- Sys.time()
+
+## print the duration of the install 
+tE - t0
+
+```
+
+# Session Info
+
+To confirm that all of the packages have successfully installed, we can
+run `sessionInfo`. In addition to listing the packages themselves, it
+will also show which versions you are using.
+
+```{r inf}
+
+sessionInfo()
+
+```
+
